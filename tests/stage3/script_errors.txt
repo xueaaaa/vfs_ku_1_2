@@ -1,0 +1,9 @@
+// Проверка обработки ошибок навигации по VFS
+cd nonexistent_dir
+cd home/nonexistent_subdir
+cd ..
+cd ..
+cd ..
+cd ..
+ls
+exit

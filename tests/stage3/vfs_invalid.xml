@@ -1,0 +1,5 @@
+<vfs name="broken">
+  <directory name="root">
+    <file name="oops.txt" content="not-closed-tag>
+  </directory>
+</vfs>

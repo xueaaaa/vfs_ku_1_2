@@ -1,0 +1,15 @@
+// Проверка вложенности >= 3 уровней и перемещения по дереву
+ls
+cd home
+ls
+cd user
+ls
+cd documents
+ls
+cd ..
+cd ..
+cd ..
+ls
+cd etc
+ls
+exit

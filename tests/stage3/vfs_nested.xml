@@ -1,0 +1,16 @@
+<vfs name="nested">
+  <directory name="root">
+    <file name="readme.txt" content="SGVsbG8sIFZGUyE=" />
+    <directory name="home">
+      <directory name="user">
+        <directory name="documents">
+          <file name="deep.txt" content="ZGVlcCBmaWxl" />
+        </directory>
+        <file name="notes.txt" content="dGVzdCBjb250ZW50" />
+      </directory>
+    </directory>
+    <directory name="etc">
+      <file name="config.txt" content="" />
+    </directory>
+  </directory>
+</vfs>
