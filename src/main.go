@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"vfs/src/internal/command"
+	"vfs/src/internal/config"
 	"vfs/src/internal/executor"
 	"vfs/src/internal/parser"
 
@@ -30,10 +31,13 @@ func main() {
 	c := newConsole()
 	registerDemoCommands(c)
 	registerExit(a)
-	c.OnSubmit(newRunner(c))
+	run := newRunner(c)
+	c.OnSubmit(run)
 
 	w.SetContent(c.view)
-	w.ShowAndRun()
+	w.Show()
+	startup(config.New(), c, run)
+	a.Run()
 }
 
 func newRunner(out printer) func(string) {
