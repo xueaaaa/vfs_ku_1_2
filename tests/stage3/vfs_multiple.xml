@@ -1,0 +1,7 @@
+<vfs name="multiple">
+  <directory name="root">
+    <file name="a.txt" content="ZmlsZSBB" />
+    <file name="b.txt" content="ZmlsZSBC" />
+    <file name="notes.txt" content="dGVzdCBjb250ZW50" />
+  </directory>
+</vfs>

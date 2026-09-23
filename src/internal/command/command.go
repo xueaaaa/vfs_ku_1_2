@@ -8,6 +8,7 @@ import (
 type Command struct {
 	Name          string
 	AvailableArgs []string
+	WithoutArgs   bool
 	Execute       func([]string) (any, error)
 }
 
@@ -16,14 +17,16 @@ var Commands []Command
 func NewCommand(
 	name string,
 	availableArgs []string,
+	withoutArgs bool,
 	execute func([]string) (any, error),
 ) {
 	Commands = append(Commands, Command{
 		Name:          name,
 		AvailableArgs: availableArgs,
+		WithoutArgs:   withoutArgs,
 		Execute: func(args []string) (any, error) {
 			for _, arg := range args {
-				if !slices.Contains(availableArgs, arg) {
+				if !slices.Contains(availableArgs, arg) && !withoutArgs {
 					return nil, fmt.Errorf("unknown argument: %s", arg)
 				}
 			}
