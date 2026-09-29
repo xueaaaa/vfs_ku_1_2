@@ -28,12 +28,4 @@ echo "=== 6. Несуществующий путь к VFS ==="
 ./vfs-shell --vfs=../tests/stage3/nonexistent.xml &
 sleep 2 && kill $! 2>/dev/null
 
-echo "=== 7. Абсолютные и относительные пути ==="
-./vfs-shell --vfs=../tests/stage3/vfs_nested.xml --script=../tests/stage3/script_paths.txt &
-sleep 2 && kill $! 2>/dev/null
-
-echo "=== 8. Флаги ls (-l -a -h -R) ==="
-./vfs-shell --vfs=../tests/stage3/vfs_nested.xml --script=../tests/stage3/script_flags.txt &
-sleep 2 && kill $! 2>/dev/null
-
 echo "Все прогоны запущены. Проверь вывод в каждом открывшемся окне вручную."

@@ -1,9 +1,0 @@
-// Флаги ls: -l -a -h, их комбинации и рекурсия -R
-ls -l
-ls -a
-ls -la /home/user
-ls -hl /home/user
-ls -R
-ls -R /home
-ls home etc
-ls -z

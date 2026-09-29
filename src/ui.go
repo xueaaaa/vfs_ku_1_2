@@ -51,6 +51,10 @@ func (c *console) Print(lines ...string) {
 	c.scroll.ScrollToBottom()
 }
 
+func (c *console) Clear() {
+	c.label.SetText("")
+}
+
 func (c *console) OnSubmit(handler func(string)) {
 	c.input.OnSubmitted = func(text string) {
 		handler(text)

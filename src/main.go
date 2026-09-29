@@ -18,6 +18,7 @@ const (
 
 type printer interface {
 	Print(lines ...string)
+	Clear()
 }
 
 func main() {
