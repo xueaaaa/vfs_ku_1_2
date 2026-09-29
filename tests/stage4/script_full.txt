@@ -1,0 +1,25 @@
+ls
+cd home
+ls
+cd user
+ls
+
+rev notes.txt
+
+rev missing.txt
+
+cd documents
+ls
+rev deep.txt
+
+cd ..
+cd ..
+cd ..
+ls
+
+clear
+
+ls
+cd etc
+ls
+exit

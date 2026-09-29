@@ -70,11 +70,11 @@ func main() {
 	content := container.NewBorder(nil, input, nil, nil, container.NewScroll(output))
 	w.SetContent(content)
 	w.Show()
-	loadConfig(appendOutput, runCommand)
+	loadConfig(appendOutput, runCommand, output)
 	a.Run()
 }
 
-func loadConfig(appendOutput func(...string), runCommand func(line string)) {
+func loadConfig(appendOutput func(...string), runCommand func(line string), output *widget.Entry) {
 	conf := config.New()
 	if conf.VfsPath != "" {
 		appendOutput(fmt.Sprintf("vfs path is set as %s", conf.VfsPath))
@@ -85,7 +85,7 @@ func loadConfig(appendOutput func(...string), runCommand func(line string)) {
 		} else {
 			s := session.NewSession(&vfs.Root)
 
-			loadCommands(*s, appendOutput)
+			loadCommands(*s, appendOutput, output)
 
 			appendOutput(fmt.Sprintf("vfs %s loaded.\nRoot folder name: "+
 				"%s\nRoot subdirectories: %s\nRoot files: %s",
@@ -122,7 +122,7 @@ func loadConfig(appendOutput func(...string), runCommand func(line string)) {
 	}
 }
 
-func loadCommands(session session.Session, appendOutput func(...string)) {
+func loadCommands(session session.Session, appendOutput func(...string), output *widget.Entry) {
 	command.NewCommand(
 		"ls",
 		[]string{},
@@ -142,7 +142,6 @@ func loadCommands(session session.Session, appendOutput func(...string)) {
 			return nil, nil
 		},
 	)
-
 	command.NewCommand(
 		"cd",
 		nil,
@@ -158,4 +157,37 @@ func loadCommands(session session.Session, appendOutput func(...string)) {
 			return nil, nil
 		},
 	)
+	command.NewCommand(
+		"rev",
+		nil,
+		true,
+		func(args []string) (any, error) {
+			if len(args) != 1 {
+				return nil, fmt.Errorf("invalid count of arguments")
+			}
+
+			file, err := session.FindFile(args[0])
+			if err != nil {
+				return nil, fmt.Errorf("rev: %w", err)
+			}
+
+			runes := []rune(string(file.Content))
+			for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+				runes[i], runes[j] = runes[j], runes[i]
+			}
+			result := string(runes)
+
+			appendOutput(result)
+			return result, nil
+		},
+	)
+	command.NewCommand(
+		"clear",
+		nil,
+		true,
+		func(args []string) (any, error) {
+			output.SetText("")
+			appendOutput("console cleared")
+			return nil, nil
+		})
 }

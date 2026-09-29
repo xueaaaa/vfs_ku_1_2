@@ -70,6 +70,28 @@ func (s *Session) Cd(arg string) error {
 	return nil
 }
 
+func (s *Session) FindFile(path string) (*vfs.File, error) {
+	parts := strings.Split(strings.Trim(path, "/"), "/")
+	current := s.Current
+
+	for _, part := range parts[:len(parts)-1] {
+		next := findSubdir(current, part)
+		if next == nil {
+			return nil, fmt.Errorf("no such directory: %s", part)
+		}
+		current = next
+	}
+
+	fileName := parts[len(parts)-1]
+	for i := range current.Files {
+		if current.Files[i].Name == fileName {
+			return &current.Files[i], nil
+		}
+	}
+
+	return nil, fmt.Errorf("file not found: %s", fileName)
+}
+
 func findSubdir(dir *vfs.Directory, name string) *vfs.Directory {
 	for i := range dir.Subdirs {
 		if dir.Subdirs[i].Name == name {
