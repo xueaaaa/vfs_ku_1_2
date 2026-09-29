@@ -46,7 +46,7 @@ func loadDirectory(xmlDir xmlDirectory) (Directory, error) {
 		if err != nil {
 			return Directory{}, err
 		}
-		dir.Files = append(dir.Files, File{Name: xf.Name, Content: content})
+		dir.Files = append(dir.Files, File{Name: xf.Name, Content: content, Owner: "root"})
 	}
 
 	for _, xd := range xmlDir.Subdirs {

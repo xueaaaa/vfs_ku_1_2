@@ -26,6 +26,7 @@ func main() {
 	w := a.NewWindow(WindowName)
 	w.Resize(fyne.NewSize(700, 450))
 	output := widget.NewMultiLineEntry()
+	output.Wrapping = fyne.TextWrapWord
 	output.Disable()
 	appendOutput := func(lines ...string) {
 		text := output.Text
@@ -168,7 +169,7 @@ func loadCommands(session session.Session, appendOutput func(...string), output 
 
 			file, err := session.FindFile(args[0])
 			if err != nil {
-				return nil, fmt.Errorf("rev: %w", err)
+				return nil, err
 			}
 
 			runes := []rune(string(file.Content))
@@ -190,4 +191,54 @@ func loadCommands(session session.Session, appendOutput func(...string), output 
 			appendOutput("console cleared")
 			return nil, nil
 		})
+
+	loadStage5Commands(session, appendOutput, output)
+}
+
+func loadStage5Commands(session session.Session, appendOutput func(...string), output *widget.Entry) {
+	command.NewCommand(
+		"rm",
+		nil,
+		true,
+		func(args []string) (any, error) {
+			if len(args) == 0 {
+				return nil, fmt.Errorf("name not specified")
+			}
+			name := args[0]
+
+			if err := session.RemoveFile(name); err == nil {
+				appendOutput(fmt.Sprintf("file %s deleted", name))
+				return nil, nil
+			}
+
+			if err := session.RemoveDir(name); err == nil {
+				appendOutput(fmt.Sprintf("directory %s deleted", name))
+				return nil, nil
+			}
+
+			return nil, fmt.Errorf("file or directory %s not found", name)
+		},
+	)
+
+	command.NewCommand(
+		"chown",
+		nil,
+		true,
+		func(args []string) (any, error) {
+			if len(args) < 2 {
+				return nil, fmt.Errorf("chown <owner> <file>")
+			}
+			newOwner := args[0]
+			fileName := args[1]
+
+			file, err := session.FindFile(fileName)
+			if err != nil {
+				return nil, err
+			}
+
+			file.Owner = newOwner
+			appendOutput(fmt.Sprintf("owner of %s is now %s", fileName, newOwner))
+			return nil, nil
+		},
+	)
 }

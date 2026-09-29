@@ -92,6 +92,28 @@ func (s *Session) FindFile(path string) (*vfs.File, error) {
 	return nil, fmt.Errorf("file not found: %s", fileName)
 }
 
+func (s *Session) RemoveFile(name string) error {
+	dir := s.Current
+	for i, f := range dir.Files {
+		if f.Name == name {
+			dir.Files = append(dir.Files[:i], dir.Files[i+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("file not found: %s", name)
+}
+
+func (s *Session) RemoveDir(name string) error {
+	dir := s.Current
+	for i, d := range dir.Subdirs {
+		if d.Name == name {
+			dir.Subdirs = append(dir.Subdirs[:i], dir.Subdirs[i+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("directory not found: %s", name)
+}
+
 func findSubdir(dir *vfs.Directory, name string) *vfs.Directory {
 	for i := range dir.Subdirs {
 		if dir.Subdirs[i].Name == name {
