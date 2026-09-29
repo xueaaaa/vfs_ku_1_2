@@ -17,6 +17,8 @@ type xmlVFS struct {
 	Root    xmlDirectory `xml:"directory"`
 }
 
+const DefaultOwner = "root"
+
 func Load(path string) (VFS, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -44,7 +46,7 @@ func loadDirectory(xmlDir xmlDirectory) (Directory, error) {
 		if err != nil {
 			return Directory{}, err
 		}
-		dir.Files = append(dir.Files, File{Name: xf.Name, Content: content})
+		dir.Files = append(dir.Files, File{Name: xf.Name, Content: content, Owner: DefaultOwner})
 	}
 
 	for _, xd := range xmlDir.Subdirs {

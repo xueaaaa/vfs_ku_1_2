@@ -42,6 +42,7 @@ type entry struct {
 	name  string
 	isDir bool
 	size  int
+	owner string
 }
 
 type lsContext struct {
@@ -128,12 +129,12 @@ func (c *lsContext) entries(dir *vfs.Directory) []entry {
 	var list []entry
 	if c.opts.Has(flagAll) {
 		list = append(list,
-			entry{name: session.CurrentDir, isDir: true},
-			entry{name: session.ParentDir, isDir: true})
+			dirEntry(session.CurrentDir),
+			dirEntry(session.ParentDir))
 	}
 	for _, d := range dir.Subdirs {
 		if c.visible(d.Name) {
-			list = append(list, entry{name: d.Name, isDir: true})
+			list = append(list, dirEntry(d.Name))
 		}
 	}
 	for _, f := range dir.Files {
@@ -148,8 +149,12 @@ func (c *lsContext) visible(name string) bool {
 	return c.opts.Has(flagAll) || !strings.HasPrefix(name, hiddenPrefix)
 }
 
+func dirEntry(name string) entry {
+	return entry{name: name, isDir: true, owner: vfs.DefaultOwner}
+}
+
 func fileEntry(f vfs.File) entry {
-	return entry{name: f.Name, size: len(f.Content)}
+	return entry{name: f.Name, size: len(f.Content), owner: f.Owner}
 }
 
 func (c *lsContext) render(entries []entry) []string {
@@ -168,15 +173,22 @@ func names(entries []entry) []string {
 }
 
 func longLines(entries []entry, human bool) []string {
+	owners := make([]string, len(entries))
 	sizes := make([]string, len(entries))
 	for i, e := range entries {
+		owners[i] = e.owner
 		sizes[i] = formatSize(e.size, human)
 	}
-	width := widest(sizes)
+	ownerWidth, sizeWidth := widest(owners), widest(sizes)
 
 	lines := make([]string, len(entries))
 	for i, e := range entries {
-		cells := []string{mark(e), fmt.Sprintf("%*s", width, sizes[i]), e.name}
+		cells := []string{
+			mark(e),
+			fmt.Sprintf("%-*s", ownerWidth, owners[i]),
+			fmt.Sprintf("%*s", sizeWidth, sizes[i]),
+			e.name,
+		}
 		lines[i] = strings.Join(cells, columnSep)
 	}
 	return lines

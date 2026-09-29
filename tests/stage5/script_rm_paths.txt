@@ -1,0 +1,16 @@
+// rm и chown по путям; сессия общая для всех команд (cd влияет на rm)
+cd /home/user
+rm documents/deep.txt
+rm /readme.txt
+rm /home/user/documents/deep.txt
+ls /home/user/documents
+ls /
+// нельзя удалить текущую директорию, её родителя, "." и ".."
+rm /home/user
+rm /home
+rm ..
+chown user1 /home/user/notes.txt
+ls -l
+cd /
+rm home
+ls

@@ -1,0 +1,20 @@
+ls
+
+rm a.txt
+ls
+
+rm b.txt
+ls
+
+chown user1 notes.txt
+
+rm a.txt
+
+chown user1
+
+chown user1 nowhere.txt
+
+rm home
+
+ls
+exit

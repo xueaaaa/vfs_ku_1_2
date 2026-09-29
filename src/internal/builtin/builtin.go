@@ -6,7 +6,8 @@ import (
 )
 
 const (
-	argFirst = 0
+	argFirst  = 0
+	argSecond = 1
 
 	msgBadArgCount = "invalid count of arguments"
 )
@@ -21,4 +22,6 @@ func Register(s *session.Session, out Console) {
 	command.NewCommand(cdName, nil, true, newCd(s, out))
 	command.NewCommand(revName, nil, true, newRev(s, out))
 	command.NewCommand(clearName, nil, true, newClear(out))
+	command.NewCommand(rmName, nil, true, newRm(s, out))
+	command.NewCommand(chownName, nil, true, newChown(s, out))
 }

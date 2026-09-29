@@ -59,7 +59,7 @@ func TestLsLongHuman(t *testing.T) {
 	if err := run(t, s, out, "ls", "-l", "/"); err != nil {
 		t.Fatal(err)
 	}
-	want := "d  0 home\nd  0 etc\n- 11 readme.txt"
+	want := "d root  0 home\nd root  0 etc\n- root 11 readme.txt"
 	if out.text() != want {
 		t.Errorf("-l:\n%s\nwant:\n%s", out.text(), want)
 	}
