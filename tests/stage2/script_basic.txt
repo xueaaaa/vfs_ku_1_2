@@ -3,4 +3,3 @@ ls
 ls arg1 arg2
 cd home
 cd $HOME
-exit

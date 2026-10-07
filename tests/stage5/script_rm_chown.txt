@@ -17,4 +17,3 @@ chown user1 nowhere.txt
 rm home
 
 ls
-exit

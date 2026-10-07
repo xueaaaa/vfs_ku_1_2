@@ -6,4 +6,3 @@ cd ..
 cd ..
 cd ..
 ls
-exit

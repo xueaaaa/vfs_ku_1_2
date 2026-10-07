@@ -22,4 +22,3 @@ clear
 ls
 cd etc
 ls
-exit
