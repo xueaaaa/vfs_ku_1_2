@@ -1,6 +1,7 @@
 #!/bin/sh
-# Этап 3: загрузка VFS из XML и обработка ошибок загрузки.
 set -e
+
+cd "$(dirname "$0")/../../src"
 
 go build -o vfs-shell .
 
